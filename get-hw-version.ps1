@@ -1,8 +1,13 @@
-# Get-VM HW Version
-$listvms = @('',
-             '',
-             '' ) 
+# Importamos funciones
+Import-Module "utils/vcenterUtils.psm1"
+# Instanciamos Credenciales de Acceso a vcenter
+Credenciales
+# Iniciamos conexion con vCenter
+Conecta-vCenters
+Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
 
-ForEach ($vm in $listvms) {
-   Get-Vm -Name $vm  | Select-Object Name,@{N='HW Version';E={$_.ExtensionData.Config.Version}} | FT
-}
+$vms = @();
+
+# listamos relacion de vms con su HW Virtual
+
+Get-Vm $vms | Select-Object Name,@{N='HW Version';E={$_.ExtensionData.Config.Version}} | Ft -AutoSize
